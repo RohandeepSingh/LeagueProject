@@ -32,6 +32,8 @@ import javax.swing.text.StyleConstants;
 import net.project.Converter;
 import net.project.api.CallException;
 import net.project.api.summoner.Summoner;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame implements ActionListener {
@@ -87,6 +89,13 @@ public class MainFrame extends JFrame implements ActionListener {
 		lblSummonerName.setFont(new Font("Arial", Font.PLAIN, 15));
 
 		textField = new JTextField();
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+					grabData();
+			}
+		});
 		textField.setColumns(10);
 		btnSearch = new JButton("Search");
 
@@ -236,33 +245,38 @@ public class MainFrame extends JFrame implements ActionListener {
 		);
 		summonerSearch.setLayout(gl_summonerSearch);
 	}
+	
+	private void grabData() {
+		if (textField.getText().isEmpty()) {
+			lblError.setText("You need to enter a summoner name!");
+			;
+		} else {
+			try {
+				lblError.setText(null);
+				Converter converter = new Converter();
+				Summoner summoner = converter.toSummoner(textField.getText().toLowerCase(),
+						regionBox.getSelectedItem().toString());
+				if (summoner != null) {
+					lblId.setText(Long.toString(summoner.getId()));
+					lblName.setText(summoner.getName());
+					lblProfileIconId.setText(Long.toString(summoner.getProfileIconId()));
+					lblRevisionDate.setText(
+							new SimpleDateFormat("MM/dd/yyyy HH:mm").format(new Date(summoner.getRevisionDate())));
+					lblLevel.setText(Long.toString(summoner.getSummonerLevel()));
+					ImageIcon icon = converter.obtainProfileIcon(Long.toString(summoner.getProfileIconId()));
+					lblProfileIcon.setIcon(icon);
+				}
+			} catch (CallException e1) {
+				lblError.setText(e1.getMessage());
+				System.out.println(e1.getMessage());
+			}
+		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equalsIgnoreCase("Search")) {
-			if (textField.getText().isEmpty()) {
-				lblError.setText("You need to enter a summoner name!");
-				;
-			} else {
-				try {
-					Converter converter = new Converter();
-					Summoner summoner = converter.toSummoner(textField.getText().toLowerCase(),
-							regionBox.getSelectedItem().toString());
-					if (summoner != null) {
-						lblId.setText(Long.toString(summoner.getId()));
-						lblName.setText(summoner.getName());
-						lblProfileIconId.setText(Long.toString(summoner.getProfileIconId()));
-						lblRevisionDate.setText(
-								new SimpleDateFormat("MM/dd/yyyy HH:mm").format(new Date(summoner.getRevisionDate())));
-						lblLevel.setText(Long.toString(summoner.getSummonerLevel()));
-						ImageIcon icon = converter.obtainProfileIcon(Long.toString(summoner.getProfileIconId()));
-						lblProfileIcon.setIcon(icon);
-					}
-				} catch (CallException e1) {
-					lblError.setText(e1.getMessage());
-					System.out.println(e1.getMessage());
-				}
-			}
+			grabData();
 		}
 
 	}

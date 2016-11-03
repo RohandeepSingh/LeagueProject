@@ -33,13 +33,15 @@ public class CallRiot {
 	 */
 	public CallRiot() {
 		url = new String();
+		region = new String();
+		response = new String();
 	}
 
 	public String now() throws CallException {
 		try {
 			if (!url.contains("dragon"))
 				url += "api_key=" + Constants.API_KEY;
-			
+
 			System.out.println(url);
 			URL url = new URL(this.url);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -58,26 +60,38 @@ public class CallRiot {
 		return response;
 	}
 
+	/**
+	 * The region we are calling about
+	 * 
+	 * @param region
+	 */
 	public void setRegion(String region) {
 		this.region = region;
 	}
 
-	public void setMethod(int method, String args) {
+	/**
+	 * The method is the url with different attributes. Different methods can
+	 * alter the reply of riot
+	 * 
+	 * @param method
+	 * @param args
+	 */
+	public void modifyURL(int callValue, String id) {
 		url = "https://" + region + ".api.pvp.net/api/lol/" + region + "/";
-		if (!args.isEmpty()) {
+		if (!id.isEmpty()) {
 
-			switch (method) {
+			switch (callValue) {
 
 			case Constants.GET_SUMMONER_BY_NAME:
 				try {
-					url += "v1.4/summoner/by-name/" + URLEncoder.encode(args, "UTF-8").replace("+", "%20") + "?";
+					url += "v1.4/summoner/by-name/" + URLEncoder.encode(id, "UTF-8").replace("+", "%20") + "?";
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
 				break;
 
 			case Constants.GET_STATS_SUMMARY:
-				url += "v1.3/stats/by-summoner/" + args + "/summary?season=SEASON2016&";
+				url += "v1.3/stats/by-summoner/" + id + "/summary?season=SEASON2016&";
 				break;
 
 			}

@@ -23,6 +23,8 @@ public class CallException extends Exception {
 			return "Stats data not found";
 		case Constants.UNAUTHORIZED:
 			return "Unauthorized. Bad API key";
+		case Constants.NOT_FOUND:
+			return "Not found.";
 		}
 		return null;
 	}

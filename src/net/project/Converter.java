@@ -34,12 +34,12 @@ public class Converter {
 	public Map<String, Summoner> toSummoners(List<String> name, String region) throws CallException {
 		CallRiot call = new CallRiot();
 		call.setRegion(region);
-		String names = "";
+		String names = new String("");
 		for (String i : name) {
             names = names + i + ",";
         }
 		
-		call.setMethod(Constants.GET_SUMMONER_BY_NAME, names);
+		call.modifyURL(Constants.GET_SUMMONER_BY_NAME, names);
 		String json = call.now();
 		Map<String, Summoner> summoner = gson.fromJson(json, new TypeToken<Map<String, Summoner>>() {
 		}.getType());
@@ -65,7 +65,6 @@ public class Converter {
 			BufferedImage image = ImageIO.read(url);
 			icon = new ImageIcon(image);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return icon;
