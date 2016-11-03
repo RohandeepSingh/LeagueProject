@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
@@ -26,6 +27,7 @@ public class CallRiot {
 	private String url;
 	private String region;
 	private String response;
+
 	/**
 	 * Creates the base for our URL
 	 */
@@ -33,10 +35,16 @@ public class CallRiot {
 		url = new String();
 	}
 
-	public String now() {
+	public String now() throws CallException {
 		try {
-			url += "api_key=" + Constants.API_KEY;
+			if (!url.contains("dragon"))
+				url += "api_key=" + Constants.API_KEY;
+			
+			System.out.println(url);
 			URL url = new URL(this.url);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			if (conn.getResponseCode() != 200)
+				throw new CallException(conn.getResponseCode());
 			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
 			StringBuffer buffer = new StringBuffer();
 			int read;
@@ -45,7 +53,7 @@ public class CallRiot {
 				buffer.append(chars, 0, read);
 			response = new String(buffer.toString());
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		return response;
 	}
@@ -56,26 +64,25 @@ public class CallRiot {
 
 	public void setMethod(int method, String args) {
 		url = "https://" + region + ".api.pvp.net/api/lol/" + region + "/";
-		switch (method) {
-		
-		case Constants.GET_SUMMONER_BY_NAME:
-			if (!args.isEmpty()) {
+		if (!args.isEmpty()) {
+
+			switch (method) {
+
+			case Constants.GET_SUMMONER_BY_NAME:
 				try {
 					url += "v1.4/summoner/by-name/" + URLEncoder.encode(args, "UTF-8").replace("+", "%20") + "?";
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
-			}
-			break;
-			
-		case Constants.GET_STATS_SUMMARY:
-			if (!args.isEmpty()) {
+				break;
+
+			case Constants.GET_STATS_SUMMARY:
 				url += "v1.3/stats/by-summoner/" + args + "/summary?season=SEASON2016&";
+				break;
+
 			}
-			break;
-			
 		}
-		
+
 	}
 
 }

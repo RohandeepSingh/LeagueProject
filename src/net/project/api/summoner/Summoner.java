@@ -1,5 +1,6 @@
 package net.project.api.summoner;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Summoner {
@@ -31,9 +32,9 @@ public class Summoner {
 	}
 
 	public String toString() {
-		String date = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm").format(new Date(revisionDate));
+		String date = new SimpleDateFormat("MM/dd/yyyy HH:mm").format(new Date(revisionDate));
 		String str = new String(
-				"\nID: " + id + "\nName: " + name + "\nprofileIconId: " + profileIconId + "\nrevisionDate: " + date);
+				"\nID: " + id + "\nName: " + name + "\nprofileIconId: " + profileIconId + "\nrevisionDate: " + date + "\nSummoner Level: " + summonerLevel);
 		return str;
 	}
 

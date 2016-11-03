@@ -13,8 +13,18 @@ package net.project;
  */
 public class Constants {
 
-	public static final String API_KEY = "5ee3bdd2-c218-4169-8c1e-a1aac40767bc";
+	public static final String API_KEY = "RGAPI-d699d0e8-897d-419e-a287-ce6e8083ddf2";
+	
 	public static final int GET_SUMMONER_BY_NAME = 0;
 	public static final int GET_STATS_SUMMARY = 1;
+	
+	public static final int BAD_REQUEST = 400;
+	public static final int UNAUTHORIZED = 401;
+	public static final int STATS_DATA_NOT_FOUND = 404;
+	public static final int RATE_LIMIT_EXCEEDED = 429;
+	public static final int INTERNAL_SERVER_ERROR = 500;
+	public static final int SERVICE_UNAVAILABLE = 503;
+
+	
 
 }
