@@ -1,11 +1,17 @@
 package net.project.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Panel;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -32,11 +38,9 @@ import javax.swing.text.StyleConstants;
 import net.project.Converter;
 import net.project.api.CallException;
 import net.project.api.summoner.Summoner;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
-public class MainFrame extends JFrame implements ActionListener {
+public class MainFrame extends JFrame implements ActionListener, MouseListener {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -49,6 +53,9 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JLabel lblRevisionDate;
 	private JLabel lblLevel;
 	private JLabel lblProfileIcon;
+	private JPanel rankedStats;
+	private JTabbedPane tabbedPane;
+
 
 	/**
 	 * Create the frame.
@@ -61,11 +68,9 @@ public class MainFrame extends JFrame implements ActionListener {
 		setBounds(100, 100, 700, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
-		contentPane.add(tabbedPane, BorderLayout.CENTER);
+		tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
 
 		Panel main = new Panel();
 		tabbedPane.addTab("Main", null, main, null);
@@ -93,7 +98,7 @@ public class MainFrame extends JFrame implements ActionListener {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
-					grabData();
+					searchSummoner();
 			}
 		});
 		textField.setColumns(10);
@@ -130,19 +135,24 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		lblId = new JLabel("");
 		lblId.setFont(new Font("Arial", Font.PLAIN, 12));
+		lblId.addMouseListener(this);
 
 		lblName = new JLabel("");
 		lblName.setFont(new Font("Arial", Font.PLAIN, 12));
+		lblName.addMouseListener(this);
 
 		lblProfileIconId = new JLabel("");
 		lblProfileIconId.setFont(new Font("Arial", Font.PLAIN, 12));
+		lblProfileIconId.addMouseListener(this);
 
 		lblRevisionDate = new JLabel("");
+		lblRevisionDate.addMouseListener(this);
 		lblRevisionDate.setLabelFor(lblRevisionDate);
 		lblRevisionDate.setFont(new Font("Arial", Font.PLAIN, 12));
 
 		lblLevel = new JLabel("");
 		lblLevel.setFont(new Font("Arial", Font.PLAIN, 12));
+		lblLevel.addMouseListener(this);
 
 		lblProfileIcon = new JLabel("");
 		lblProfileIcon.setHorizontalAlignment(SwingConstants.CENTER);
@@ -251,9 +261,23 @@ public class MainFrame extends JFrame implements ActionListener {
 														GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))))
 						.addContainerGap()));
 		summonerSearch.setLayout(gl_summonerSearch);
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 684, GroupLayout.PREFERRED_SIZE)
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 261, GroupLayout.PREFERRED_SIZE)
+		);
+		
+		rankedStats = new JPanel();
+		tabbedPane.addTab("Ranked Stats", null, rankedStats, null);
+		tabbedPane.setEnabledAt(2, false);
+		contentPane.setLayout(gl_contentPane);
 	}
 
-	private void grabData() {
+	private void searchSummoner() {
 		if (textField.getText().isEmpty()) {
 			lblError.setText("You need to enter a summoner name!");
 		} else {
@@ -271,19 +295,73 @@ public class MainFrame extends JFrame implements ActionListener {
 					lblLevel.setText(Long.toString(summoner.getSummonerLevel()));
 					ImageIcon icon = converter.obtainProfileIcon(Long.toString(summoner.getProfileIconId()));
 					lblProfileIcon.setIcon(icon);
+					tabbedPane.setEnabledAt(2, true);
 				}
 			} catch (CallException e1) {
 				lblError.setText(e1.getMessage());
+				clearText();
+				tabbedPane.setEnabledAt(2, false);
 			}
 		}
+	}
+
+	private void clearText() {
+		lblId.setText(null);
+		lblName.setText(null);
+		lblProfileIconId.setText(null);
+		lblRevisionDate.setText(null);
+		lblLevel.setText(null);
+		lblProfileIcon.setIcon(null);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equalsIgnoreCase("Search")) {
-			grabData();
+			searchSummoner();
 		}
 
 	}
 
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (e.getComponent().equals(lblRevisionDate) || e.getComponent().equals(lblId)
+				|| e.getComponent().equals(lblName) || e.getComponent().equals(lblProfileIconId)
+				|| e.getComponent().equals(lblLevel)) {
+			JLabel clickedLbl = (JLabel) e.getComponent();
+			clickedLbl = (JLabel) e.getComponent();
+			String text = new String(clickedLbl.getText());
+			if (!text.isEmpty()) {
+				 StringSelection selection = new
+				 StringSelection(text);
+				 Clipboard clipboard =
+				 Toolkit.getDefaultToolkit().getSystemClipboard();
+				 clipboard.setContents(selection, selection);
+			}
+		}
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }
