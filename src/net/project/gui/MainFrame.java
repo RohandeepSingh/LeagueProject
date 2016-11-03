@@ -148,108 +148,114 @@ public class MainFrame extends JFrame implements ActionListener {
 		lblProfileIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		GroupLayout gl_summonerSearch = new GroupLayout(summonerSearch);
 		gl_summonerSearch.setHorizontalGroup(
-			gl_summonerSearch.createParallelGroup(Alignment.LEADING)
+				gl_summonerSearch.createParallelGroup(Alignment.LEADING).addGroup(gl_summonerSearch
+						.createSequentialGroup().addGroup(gl_summonerSearch.createParallelGroup(Alignment.LEADING)
+								.addGroup(
+										gl_summonerSearch.createSequentialGroup().addGap(72).addGroup(gl_summonerSearch
+												.createParallelGroup(Alignment.LEADING).addGroup(gl_summonerSearch
+														.createSequentialGroup().addComponent(lblSummonerName)
+														.addPreferredGap(ComponentPlacement.RELATED).addComponent(
+																textField, GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+														.addGap(4).addComponent(regionBox, GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+														.addGap(4).addComponent(btnSearch))
+												.addComponent(separator, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+								.addGroup(gl_summonerSearch.createSequentialGroup().addGap(42)
+										.addGroup(gl_summonerSearch.createParallelGroup(Alignment.LEADING)
+												.addComponent(lblError).addGroup(gl_summonerSearch
+														.createSequentialGroup()
+														.addGroup(gl_summonerSearch
+																.createParallelGroup(Alignment.LEADING)
+																.addGroup(gl_summonerSearch.createSequentialGroup()
+																		.addComponent(lblSummonerProfileIcon)
+																		.addPreferredGap(ComponentPlacement.RELATED)
+																		.addComponent(lblProfileIconId,
+																				GroupLayout.PREFERRED_SIZE, 42,
+																				GroupLayout.PREFERRED_SIZE))
+																.addGroup(gl_summonerSearch.createSequentialGroup()
+																		.addComponent(label)
+																		.addPreferredGap(ComponentPlacement.RELATED)
+																		.addComponent(lblId))
+																.addGroup(gl_summonerSearch.createSequentialGroup()
+																		.addComponent(lblSummonerLevel)
+																		.addPreferredGap(ComponentPlacement.RELATED)
+																		.addComponent(lblLevel,
+																				GroupLayout.PREFERRED_SIZE, 42,
+																				GroupLayout.PREFERRED_SIZE))
+																.addGroup(gl_summonerSearch.createSequentialGroup()
+																		.addComponent(lblSummonerRevisionDate)
+																		.addPreferredGap(ComponentPlacement.RELATED)
+																		.addComponent(lblRevisionDate,
+																				GroupLayout.PREFERRED_SIZE, 115,
+																				GroupLayout.PREFERRED_SIZE))
+																.addGroup(gl_summonerSearch.createSequentialGroup()
+																		.addComponent(lblNewLabel)
+																		.addPreferredGap(ComponentPlacement.RELATED)
+																		.addComponent(lblName, GroupLayout.DEFAULT_SIZE,
+																				233, Short.MAX_VALUE)
+																		.addPreferredGap(ComponentPlacement.RELATED)))
+														.addGroup(gl_summonerSearch
+																.createParallelGroup(Alignment.LEADING)
+																.addGroup(gl_summonerSearch.createSequentialGroup()
+																		.addPreferredGap(ComponentPlacement.RELATED,
+																				231, Short.MAX_VALUE)
+																		.addComponent(layeredPane,
+																				GroupLayout.PREFERRED_SIZE,
+																				GroupLayout.DEFAULT_SIZE,
+																				GroupLayout.PREFERRED_SIZE))
+																.addGroup(gl_summonerSearch.createSequentialGroup()
+																		.addGap(65).addComponent(lblProfileIcon)))))))
+						.addGap(36)));
+		gl_summonerSearch.setVerticalGroup(gl_summonerSearch.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_summonerSearch.createSequentialGroup()
-					.addGroup(gl_summonerSearch.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_summonerSearch.createSequentialGroup()
-							.addGap(72)
-							.addGroup(gl_summonerSearch.createParallelGroup(Alignment.LEADING)
+						.addComponent(separator, GroupLayout.PREFERRED_SIZE, 1, GroupLayout.PREFERRED_SIZE)
+						.addGap(5)
+						.addGroup(gl_summonerSearch
+								.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_summonerSearch.createSequentialGroup().addGap(2).addComponent(textField,
+										GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_summonerSearch.createSequentialGroup().addGap(2).addComponent(regionBox,
+										GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE))
+								.addComponent(btnSearch).addComponent(lblSummonerName, GroupLayout.PREFERRED_SIZE, 23,
+										GroupLayout.PREFERRED_SIZE))
+						.addGap(46)
+						.addGroup(gl_summonerSearch.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_summonerSearch.createSequentialGroup()
-									.addComponent(lblSummonerName)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addGap(4)
-									.addComponent(regionBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addGap(4)
-									.addComponent(btnSearch))
-								.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-						.addGroup(gl_summonerSearch.createSequentialGroup()
-							.addGap(42)
-							.addGroup(gl_summonerSearch.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblError)
+										.addComponent(layeredPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(11).addComponent(lblProfileIcon)
+										.addPreferredGap(ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
+										.addComponent(lblError))
 								.addGroup(gl_summonerSearch.createSequentialGroup()
-									.addGroup(gl_summonerSearch.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_summonerSearch.createSequentialGroup()
-											.addComponent(lblSummonerProfileIcon)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(lblProfileIconId, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_summonerSearch.createSequentialGroup()
-											.addComponent(label)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(lblId))
-										.addGroup(gl_summonerSearch.createSequentialGroup()
-											.addComponent(lblSummonerLevel)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(lblLevel, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_summonerSearch.createSequentialGroup()
-											.addComponent(lblSummonerRevisionDate)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(lblRevisionDate, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_summonerSearch.createSequentialGroup()
-											.addComponent(lblNewLabel)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(lblName, GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
-											.addPreferredGap(ComponentPlacement.RELATED)))
-									.addGroup(gl_summonerSearch.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_summonerSearch.createSequentialGroup()
-											.addPreferredGap(ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
-											.addComponent(layeredPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_summonerSearch.createSequentialGroup()
-											.addGap(65)
-											.addComponent(lblProfileIcon)))))))
-					.addGap(36))
-		);
-		gl_summonerSearch.setVerticalGroup(
-			gl_summonerSearch.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_summonerSearch.createSequentialGroup()
-					.addComponent(separator, GroupLayout.PREFERRED_SIZE, 1, GroupLayout.PREFERRED_SIZE)
-					.addGap(5)
-					.addGroup(gl_summonerSearch.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_summonerSearch.createSequentialGroup()
-							.addGap(2)
-							.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_summonerSearch.createSequentialGroup()
-							.addGap(2)
-							.addComponent(regionBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addComponent(btnSearch)
-						.addComponent(lblSummonerName, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
-					.addGap(46)
-					.addGroup(gl_summonerSearch.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_summonerSearch.createSequentialGroup()
-							.addComponent(layeredPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(11)
-							.addComponent(lblProfileIcon)
-							.addPreferredGap(ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
-							.addComponent(lblError))
-						.addGroup(gl_summonerSearch.createSequentialGroup()
-							.addGroup(gl_summonerSearch.createParallelGroup(Alignment.BASELINE)
-								.addComponent(label)
-								.addComponent(lblId))
-							.addGap(5)
-							.addGroup(gl_summonerSearch.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblNewLabel)
-								.addComponent(lblName, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
-							.addGap(5)
-							.addGroup(gl_summonerSearch.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblSummonerProfileIcon)
-								.addComponent(lblProfileIconId, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
-							.addGap(5)
-							.addGroup(gl_summonerSearch.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblSummonerRevisionDate)
-								.addComponent(lblRevisionDate, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
-							.addGap(5)
-							.addGroup(gl_summonerSearch.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblSummonerLevel)
-								.addComponent(lblLevel, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap())
-		);
+										.addGroup(gl_summonerSearch.createParallelGroup(Alignment.BASELINE)
+												.addComponent(label).addComponent(lblId))
+										.addGap(5)
+										.addGroup(gl_summonerSearch.createParallelGroup(Alignment.BASELINE)
+												.addComponent(lblNewLabel).addComponent(lblName,
+														GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
+										.addGap(5)
+										.addGroup(gl_summonerSearch.createParallelGroup(Alignment.BASELINE)
+												.addComponent(lblSummonerProfileIcon).addComponent(lblProfileIconId,
+														GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
+										.addGap(5)
+										.addGroup(gl_summonerSearch.createParallelGroup(Alignment.BASELINE)
+												.addComponent(lblSummonerRevisionDate).addComponent(lblRevisionDate,
+														GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
+										.addGap(5)
+										.addGroup(gl_summonerSearch.createParallelGroup(Alignment.BASELINE)
+												.addComponent(lblSummonerLevel).addComponent(lblLevel,
+														GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))))
+						.addContainerGap()));
 		summonerSearch.setLayout(gl_summonerSearch);
 	}
-	
+
 	private void grabData() {
 		if (textField.getText().isEmpty()) {
 			lblError.setText("You need to enter a summoner name!");
-			;
 		} else {
 			try {
 				lblError.setText(null);
@@ -268,7 +274,6 @@ public class MainFrame extends JFrame implements ActionListener {
 				}
 			} catch (CallException e1) {
 				lblError.setText(e1.getMessage());
-				System.out.println(e1.getMessage());
 			}
 		}
 	}
