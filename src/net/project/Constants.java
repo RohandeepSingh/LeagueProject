@@ -13,7 +13,7 @@ package net.project;
  */
 public class Constants {
 
-	public static final String API_KEY = "RGAPI-d699d0e8-897d-419e-a287-ce6e8083ddf2";
+	public static final String API_KEY = "XX X i keep uploading with my key :/";
 	
 	public static final int GET_SUMMONER_BY_NAME = 0;
 	public static final int GET_STATS_SUMMARY = 1;
