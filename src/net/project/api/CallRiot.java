@@ -77,21 +77,34 @@ public class CallRiot {
 	 * @param args
 	 */
 	public void modifyURL(int callValue, String id) {
-		url = "https://" + region + ".api.pvp.net/api/lol/" + region + "/";
+		url = "https://" + region + ".api.pvp.net";
 		if (!id.isEmpty()) {
 
 			switch (callValue) {
 
 			case Constants.GET_SUMMONER_BY_NAME:
 				try {
-					url += "v1.4/summoner/by-name/" + URLEncoder.encode(id, "UTF-8").replace("+", "%20") + "?";
+					url += "/api/lol/" + region + "/v1.4/summoner/by-name/"
+							+ URLEncoder.encode(id, "UTF-8").replace("+", "%20") + "?";
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
 				break;
 
-			case Constants.GET_STATS_SUMMARY:
-				url += "v1.3/stats/by-summoner/" + id + "/summary?season=SEASON2016&";
+			case Constants.GET_RANKED_SUMMARY:
+				url += "/api/lol/" + region + "/v1.3/stats/by-summoner/" + id + "/summary?season=SEASON2016&";
+				break;
+
+			case Constants.GET_CURRENT_GAME:
+				url += "/observer-mode/rest/consumer/getSpectatorGameInfo/NA1/" + id + "?";
+				break;
+
+			case Constants.GET_STATIC_CHAMPION:
+				url += "/api/lol/static-data/na/v1.2/champion/" + id + "?";
+				break;
+				
+			case Constants.GET_RANKED_STATS:
+				url += "/api/lol/na/v1.3/stats/by-summoner/" + id + "/ranked?season=SEASON2016&";
 				break;
 
 			}

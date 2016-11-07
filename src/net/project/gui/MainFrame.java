@@ -35,9 +35,19 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
+import net.project.Constants;
 import net.project.Converter;
 import net.project.api.CallException;
+import net.project.api.CallRiot;
+import net.project.api.currentgame.CurrentGameInfo;
+import net.project.api.stats.AggregatedStats;
+import net.project.api.stats.RankedStats;
 import net.project.api.summoner.Summoner;
+import java.awt.GridLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.SpringLayout;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame implements ActionListener, MouseListener {
@@ -53,9 +63,18 @@ public class MainFrame extends JFrame implements ActionListener, MouseListener {
 	private JLabel lblRevisionDate;
 	private JLabel lblLevel;
 	private JLabel lblProfileIcon;
-	private JPanel rankedStats;
 	private JTabbedPane tabbedPane;
-
+	private Summoner summoner;
+	private String region;
+	private JLabel lblSummonerName_1;
+	private JLabel lblTotalGames;
+	private JLabel lblTotalWins;
+	private JLabel lblTotalLosses;
+	private JLabel totalGames;
+	private JLabel totalWins;
+	private JLabel totalLosses;
+	private CallRiot call;
+	private Converter converter;
 
 	/**
 	 * Create the frame.
@@ -262,19 +281,65 @@ public class MainFrame extends JFrame implements ActionListener, MouseListener {
 						.addContainerGap()));
 		summonerSearch.setLayout(gl_summonerSearch);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 684, GroupLayout.PREFERRED_SIZE)
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 261, GroupLayout.PREFERRED_SIZE)
-		);
+		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addComponent(tabbedPane,
+				GroupLayout.PREFERRED_SIZE, 684, GroupLayout.PREFERRED_SIZE));
+		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addComponent(tabbedPane,
+				GroupLayout.PREFERRED_SIZE, 261, GroupLayout.PREFERRED_SIZE));
 		
-		rankedStats = new JPanel();
+		Panel rankedStats = new Panel();
 		tabbedPane.addTab("Ranked Stats", null, rankedStats, null);
 		tabbedPane.setEnabledAt(2, false);
+		SpringLayout sl_rankedStats = new SpringLayout();
+		rankedStats.setLayout(sl_rankedStats);
+		
+		lblSummonerName_1 = new JLabel("Mintzy");
+		sl_rankedStats.putConstraint(SpringLayout.NORTH, lblSummonerName_1, 10, SpringLayout.NORTH, rankedStats);
+		sl_rankedStats.putConstraint(SpringLayout.WEST, lblSummonerName_1, 10, SpringLayout.WEST, rankedStats);
+		lblSummonerName_1.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 20));
+		rankedStats.add(lblSummonerName_1);
+		
+		lblTotalGames = new JLabel("Total Games:");
+		sl_rankedStats.putConstraint(SpringLayout.NORTH, lblTotalGames, 74, SpringLayout.NORTH, rankedStats);
+		sl_rankedStats.putConstraint(SpringLayout.WEST, lblTotalGames, 97, SpringLayout.WEST, rankedStats);
+		lblTotalGames.setFont(new Font("Arial", Font.BOLD, 15));
+		rankedStats.add(lblTotalGames);
+		
+		lblTotalWins = new JLabel("Total Wins:");
+		sl_rankedStats.putConstraint(SpringLayout.NORTH, lblTotalWins, 6, SpringLayout.SOUTH, lblTotalGames);
+		sl_rankedStats.putConstraint(SpringLayout.WEST, lblTotalWins, 0, SpringLayout.WEST, lblTotalGames);
+		lblTotalWins.setFont(new Font("Arial", Font.BOLD, 15));
+		rankedStats.add(lblTotalWins);
+		
+		lblTotalLosses = new JLabel("Total Losses:");
+		sl_rankedStats.putConstraint(SpringLayout.NORTH, lblTotalLosses, 6, SpringLayout.SOUTH, lblTotalWins);
+		sl_rankedStats.putConstraint(SpringLayout.WEST, lblTotalLosses, 0, SpringLayout.WEST, lblTotalGames);
+		lblTotalLosses.setFont(new Font("Arial", Font.BOLD, 15));
+		rankedStats.add(lblTotalLosses);
+		
+		totalGames = new JLabel("");
+		sl_rankedStats.putConstraint(SpringLayout.WEST, totalGames, 6, SpringLayout.EAST, lblTotalGames);
+		sl_rankedStats.putConstraint(SpringLayout.SOUTH, totalGames, 0, SpringLayout.SOUTH, lblTotalGames);
+		totalGames.setFont(new Font("Arial", Font.BOLD, 15));
+		rankedStats.add(totalGames);
+		
+		totalWins = new JLabel("");
+		sl_rankedStats.putConstraint(SpringLayout.WEST, totalWins, 6, SpringLayout.EAST, lblTotalWins);
+		sl_rankedStats.putConstraint(SpringLayout.SOUTH, totalWins, 0, SpringLayout.SOUTH, lblTotalWins);
+		totalWins.setFont(new Font("Arial", Font.BOLD, 15));
+		rankedStats.add(totalWins);
+		
+		totalLosses = new JLabel("");
+		sl_rankedStats.putConstraint(SpringLayout.NORTH, totalLosses, 0, SpringLayout.NORTH, lblTotalLosses);
+		sl_rankedStats.putConstraint(SpringLayout.WEST, totalLosses, 6, SpringLayout.EAST, lblTotalLosses);
+		totalLosses.setFont(new Font("Arial", Font.BOLD, 15));
+		rankedStats.add(totalLosses);
+
+		JTabbedPane currentGame = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.addTab("Current Game", null, currentGame, null);
+		tabbedPane.setEnabledAt(3, false);
 		contentPane.setLayout(gl_contentPane);
+		call = new CallRiot();
+		converter = new Converter();
 	}
 
 	private void searchSummoner() {
@@ -283,9 +348,8 @@ public class MainFrame extends JFrame implements ActionListener, MouseListener {
 		} else {
 			try {
 				lblError.setText(null);
-				Converter converter = new Converter();
-				Summoner summoner = converter.toSummoner(textField.getText().toLowerCase(),
-						regionBox.getSelectedItem().toString());
+				region = regionBox.getSelectedItem().toString();
+				summoner = converter.getSummoner(textField.getText().toLowerCase(), region);
 				if (summoner != null) {
 					lblId.setText(Long.toString(summoner.getId()));
 					lblName.setText(summoner.getName());
@@ -293,16 +357,48 @@ public class MainFrame extends JFrame implements ActionListener, MouseListener {
 					lblRevisionDate.setText(
 							new SimpleDateFormat("MM/dd/yyyy HH:mm").format(new Date(summoner.getRevisionDate())));
 					lblLevel.setText(Long.toString(summoner.getSummonerLevel()));
-					ImageIcon icon = converter.obtainProfileIcon(Long.toString(summoner.getProfileIconId()));
+					ImageIcon icon = converter.obtainProfileIcon(summoner.getProfileIconId());
 					lblProfileIcon.setIcon(icon);
+					loadRankedStats(summoner);
 					tabbedPane.setEnabledAt(2, true);
+					try {
+						call.setRegion(region);
+						call.modifyURL(Constants.GET_CURRENT_GAME, Long.toString(summoner.getId()));
+						CurrentGameInfo currentGame = converter.getCurrentGameInfo(call.now());
+						if (!currentGame.equals(null)) {
+							tabbedPane.setEnabledAt(3, true);
+						}
+					} catch (CallException e) {
+						System.out.println("Summoner not in game..");
+						tabbedPane.setEnabledAt(3, false);
+					}
 				}
 			} catch (CallException e1) {
 				lblError.setText(e1.getMessage());
 				clearText();
 				tabbedPane.setEnabledAt(2, false);
+				tabbedPane.setEnabledAt(3, false);
 			}
 		}
+	}
+	
+	private void loadRankedStats(Summoner summoner) {
+		try {
+			call.setRegion(region);
+			call.modifyURL(Constants.GET_RANKED_STATS, Long.toString(summoner.getId()));
+			RankedStats stats = converter.getRankedStats(call.now());
+			for (int i = 0; i < stats.getChampions().size(); i++) {
+				if (stats.getChampions().get(i).getId() == 0) {
+					AggregatedStats allStats = stats.getChampions().get(i).getStats();
+					totalGames.setText(Integer.toString(allStats.getTotalSessionsPlayed()));
+					totalWins.setText((Integer.toString(allStats.getTotalSessionsWon())));
+					totalLosses.setText((Integer.toString(allStats.getTotalSessionsLost())));
+				}
+			}
+		} catch (CallException e) {
+			System.out.println(e.getMessage());
+		}
+		lblSummonerName_1.setText(summoner.getName());
 	}
 
 	private void clearText() {
@@ -331,11 +427,9 @@ public class MainFrame extends JFrame implements ActionListener, MouseListener {
 			clickedLbl = (JLabel) e.getComponent();
 			String text = new String(clickedLbl.getText());
 			if (!text.isEmpty()) {
-				 StringSelection selection = new
-				 StringSelection(text);
-				 Clipboard clipboard =
-				 Toolkit.getDefaultToolkit().getSystemClipboard();
-				 clipboard.setContents(selection, selection);
+				StringSelection selection = new StringSelection(text);
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				clipboard.setContents(selection, selection);
 			}
 		}
 
@@ -344,24 +438,24 @@ public class MainFrame extends JFrame implements ActionListener, MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

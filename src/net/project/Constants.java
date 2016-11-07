@@ -13,10 +13,13 @@ package net.project;
  */
 public class Constants {
 
-	public static final String API_KEY = "X X X ";
+	public static final String API_KEY = new String("XXXXXXX");
 	
 	public static final int GET_SUMMONER_BY_NAME = 0;
-	public static final int GET_STATS_SUMMARY = 1;
+	public static final int GET_RANKED_SUMMARY = 1;
+	public static final int GET_CURRENT_GAME = 3;
+	public static final int GET_STATIC_CHAMPION = 4;
+	public static final int GET_RANKED_STATS = 5;
 	
 	public static final int BAD_REQUEST = 400;
 	public static final int UNAUTHORIZED = 401;
@@ -25,6 +28,10 @@ public class Constants {
 	public static final int RATE_LIMIT_EXCEEDED = 429;
 	public static final int INTERNAL_SERVER_ERROR = 500;
 	public static final int SERVICE_UNAVAILABLE = 503;
+
+	
+
+	
 
 	
 
